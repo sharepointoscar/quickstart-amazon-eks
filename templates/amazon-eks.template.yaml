@@ -43,6 +43,9 @@ Parameters:
   MaxNumberOfNodes:
     Default: 3
     Type: Number
+  VPCNAME:
+    Type: "String"
+    Default: ""  
   VPCID:
     Type: "AWS::EC2::VPC::Id"
   PublicSubnet1ID:

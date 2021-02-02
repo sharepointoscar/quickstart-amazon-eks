@@ -2,19 +2,22 @@ project:
   name: quickstart-amazon-eks
   owner: quickstart-eng@amazon.com
   shorten_stack_name: true
+  s3_bucket: tcat-quickstart-amazon-eks-62gi8bg3
   regions:
-  - me-south-1
+  - us-east-1
   template: templates/amazon-eks-entrypoint-new-vpc.template.yaml
   parameters:
     RemoteAccessCIDR: 10.0.0.0/16
     QSS3BucketName: $[taskcat_autobucket]
-    QSS3BucketRegion: $[taskcat_current_region]
+    QSS3BucketRegion: us-east-1 #$[taskcat_current_region]
   lambda_source_path: functions/source
   lambda_zip_path: functions/packages
 tests:
   defaults:
     parameters:
       AvailabilityZones: $[taskcat_genaz_3]
+      QSS3BucketName: tcat-quickstart-amazon-eks-3mh79idf
+      QSS3BucketRegion: us-east-1
   public-endpoint:
     parameters:
       AvailabilityZones: $[taskcat_genaz_3]

@@ -67,6 +67,7 @@ Metadata:
           default: VPC network configuration
         Parameters:
           - NumberOfAZs
+          - VPCNAME
           - VPCCIDR
           - PrivateSubnet1CIDR
           - PrivateSubnet2CIDR
@@ -176,6 +177,8 @@ Metadata:
         default: Quick Start S3 bucket Region
       RemoteAccessCIDR:
         default: Allowed external access CIDR
+      VPCNAME: 
+        default: VPC Name
       VPCCIDR:
         default: VPC CIDR
       NodeInstanceType:
@@ -351,6 +354,10 @@ Parameters:
     AllowedValues: [Enabled, Disabled]
     Default: Disabled
     Description: Configure access to the Kubernetes API server endpoint from outside of your VPC.
+  VPCNAME:
+    Type: String
+    Default: ""
+    Description: If you have a naming convention for VPCs, type the name of your VPC accordingly.
   VPCCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16–28
@@ -680,6 +687,7 @@ Resources:
         PublicSubnet2CIDR: !Ref 'PublicSubnet2CIDR'
         PublicSubnet3CIDR: !Ref 'PublicSubnet3CIDR'
         PublicSubnetTag2: "kubernetes.io/role/elb="
+        VPCNAME: !Ref 'VPCNAME'
         VPCCIDR: !Ref 'VPCCIDR'
   EKSStack:
     Type: AWS::CloudFormation::Stack
@@ -727,6 +735,7 @@ Resources:
         AdditionalEKSAdminUserArn: !Ref AdditionalEKSAdminUserArn
         AdditionalEKSAdminRoleArn: !Ref AdditionalEKSAdminRoleArn
         VPCID: !GetAtt VPCStack.Outputs.VPCID
+        VPCNAME: !Ref VPCStack.Outputs.VPCNAME
         ProvisionClusterAutoScaler: !Ref ClusterAutoScaler
         EfsStorageClass: !Ref EfsStorageClass
         ProvisionMonitoringStack: !Ref MonitoringStack
